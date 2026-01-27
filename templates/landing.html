@@ -1,0 +1,399 @@
+{% load i18n %}
+{% load static %}
+{% get_current_language as LANGUAGE_CODE %}
+
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% trans "Admission 2026 - Shakarim University" %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <style>
+        .scroll-mt-20 { scroll-margin-top: 5rem; }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans text-gray-800">
+
+    <!-- Header -->
+    <header class="fixed top-0 w-full bg-white shadow-md z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <!-- Logo Placeholer -->
+                <div class="font-bold text-2xl text-blue-900">Shakarim University</div>
+            </div>
+            
+            <nav class="hidden md:flex space-x-6 text-sm font-medium">
+        <a href="#admission" class="hover:text-blue-600 transition">Поступление</a>
+        <a href="#programs" class="hover:text-blue-600 transition">Программы</a>
+        <a href="#calendar" class="hover:text-blue-600 transition">Календарь</a>
+        <a href="#tuition" class="hover:text-blue-600 transition">Стоимость</a>
+        <a href="#faq" class="hover:text-blue-600 transition">Вопросы</a>
+        <a href="#contacts" class="hover:text-blue-600 transition">Контакты</a>
+    </nav>
+
+    <div class="flex items-center space-x-4">
+        <!-- Lang Switch -->
+        <div class="text-sm font-semibold">
+            {% get_available_languages as LANGUAGES %}
+            {% for lang_code, lang_name in LANGUAGES %}
+                {% if lang_code != LANGUAGE_CODE %}
+                <a href="/{{ lang_code }}/" class="text-gray-500 hover:text-blue-800 uppercase">{{ lang_code }}</a>
+                {% else %}
+                <span class="text-blue-800 uppercase">{{ lang_code }}</span>
+                {% endif %}
+            {% endfor %}
+        </div>
+        
+        <button onclick="openModal('consultationModal')" class="bg-blue-800 text-white px-4 py-2 rounded-full hover:bg-blue-900 transition text-sm font-semibold">
+            Онлайн консультация
+        </button>
+    </div>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="pt-28 pb-16 bg-blue-50 relative overflow-hidden">
+        <div class="container mx-auto px-4 grid md:grid-cols-2 gap-8 items-center">
+            <div class="space-y-6">
+                <span class="bg-blue-200 text-blue-900 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide">
+                    Приём 2026 открыт
+                </span>
+                <h1 class="text-4xl md:text-5xl font-bold text-gray-900 leading-tight">
+                    Твоё будущее начинается в Shakarim
+                </h1>
+                <p class="text-lg text-gray-600">
+                    Выбери востребованную профессию, получи грант и стань лидером в своей сфере.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <button onclick="openModal('consultationModal')" class="bg-blue-800 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-900 transition text-center">
+                        Получить консультацию
+                    </button>
+                    {% if config.career_test_link %}
+                    <a href="{{ config.career_test_link }}" target="_blank" class="border-2 border-blue-800 text-blue-800 px-8 py-3 rounded-lg font-semibold hover:bg-blue-50 transition text-center">
+                        Профориентация
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="relative">
+                <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Students" class="rounded-xl shadow-2xl">
+            </div>
+        </div>
+    </section>
+
+    <!-- Steps -->
+    <section id="admission" class="py-16 bg-white scroll-mt-20">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12">Как стать студентом?</h2>
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-6">
+                <!-- Step 1 -->
+                <div class="p-6 bg-gray-50 rounded-xl hover:shadow-lg transition border border-gray-100">
+                    <div class="text-4xl font-bold text-blue-200 mb-4">01</div>
+                    <h3 class="font-bold text-lg mb-2">Выбор ОП</h3>
+                    <p class="text-sm text-gray-600">Выбери свою специальность и профильные предметы.</p>
+                </div>
+                <!-- Step 2 -->
+                <div class="p-6 bg-gray-50 rounded-xl hover:shadow-lg transition border border-gray-100">
+                    <div class="text-4xl font-bold text-blue-200 mb-4">02</div>
+                    <h3 class="font-bold text-lg mb-2">Регистрация</h3>
+                    <p class="text-sm text-gray-600">Зарегистрируйся на ЕНТ или вступительные экзамены.</p>
+                </div>
+                <!-- Step 3 -->
+                <div class="p-6 bg-gray-50 rounded-xl hover:shadow-lg transition border border-gray-100">
+                    <div class="text-4xl font-bold text-blue-200 mb-4">03</div>
+                    <h3 class="font-bold text-lg mb-2">Тестирование</h3>
+                    <p class="text-sm text-gray-600">Сдай экзамены и получи сертификат с баллами.</p>
+                </div>
+                <!-- Step 4 -->
+                <div class="p-6 bg-gray-50 rounded-xl hover:shadow-lg transition border border-gray-100">
+                    <div class="text-4xl font-bold text-blue-200 mb-4">04</div>
+                    <h3 class="font-bold text-lg mb-2">Конкурс</h3>
+                    <p class="text-sm text-gray-600">Подай заявку на участие в конкурсе грантов.</p>
+                </div>
+                 <!-- Step 5 -->
+                 <div class="p-6 bg-gray-50 rounded-xl hover:shadow-lg transition border border-gray-100">
+                    <div class="text-4xl font-bold text-blue-200 mb-4">05</div>
+                    <h3 class="font-bold text-lg mb-2">Зачисление</h3>
+                    <p class="text-sm text-gray-600">Заключи договор и стань студентом Shakarim.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Programs -->
+    <section id="programs" class="py-16 bg-gray-50 scroll-mt-20" x-data="{ search: '', tab: 'ALL' }">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-8 gap-4">
+                <div>
+                    <h2 class="text-3xl font-bold mb-2">Образовательные программы</h2>
+                    <p class="text-gray-600">Более 50 программ для твоей будущей карьеры.</p>
+                </div>
+                <div class="w-full md:w-1/3">
+                    <input x-model="search" type="text" placeholder="Найти специальность..." class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {% for program in programs %}
+                <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition" x-show="search === '' || '{{ program.title|escapejs }}'.toLowerCase().includes(search.toLowerCase())">
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs font-bold rounded">{{ program.get_level_display }}</span>
+                        <!-- Chat icon placeholder -->
+                        <button onclick="openModal('consultationModal', '{{ program.title|escapejs }}')" class="text-gray-400 hover:text-blue-600">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+                        </button>
+                    </div>
+                    <h3 class="font-bold text-lg text-gray-900 mb-2">{{ program.title }}</h3>
+                    <p class="text-sm text-gray-500 mb-4 line-clamp-2">{{ program.description }}</p>
+                    {% if program.tags %}
+                    <div class="text-xs text-gray-400 mb-4">{{ program.tags }}</div>
+                    {% endif %}
+                    
+                    {% if program.brochure %}
+                    <button onclick="openPdfModal('{{ program.brochure.url }}')" class="w-full py-2 border border-blue-800 text-blue-800 rounded-lg hover:bg-blue-50 font-medium transition flex justify-center items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                        Буклет
+                    </button>
+                    {% else %}
+                    <button disabled class="w-full py-2 border border-gray-200 text-gray-400 rounded-lg cursor-not-allowed font-medium transition">
+                        Нет буклета
+                    </button>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Calendar -->
+    <section id="calendar" class="py-16 bg-white scroll-mt-20">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold mb-8">Календарь абитуриента 2026</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                {% for event in calendar_events %}
+                <div class="bg-white border border-gray-200 p-6 rounded-xl hover:border-blue-400 transition relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 p-3 opacity-10 group-hover:opacity-20 transition">
+                        <svg class="w-16 h-16 text-blue-900" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path></svg>
+                    </div>
+                    <div class="text-blue-800 font-extrabold text-2xl mb-1">{{ event.date_display }}</div>
+                    <div class="font-bold text-gray-900 mb-2">{{ event.title }}</div>
+                    <p class="text-sm text-gray-600 mb-4">{{ event.description }}</p>
+                    <span class="inline-block px-2 py-1 bg-gray-100 text-gray-600 text-xs font-bold rounded uppercase">{{ event.event_type }}</span>
+                </div>
+                {% endfor %}
+            </div>
+            <p class="text-xs text-gray-400 mt-6">* Сроки могут меняться в соответствии с обновлениями министерства.</p>
+        </div>
+    </section>
+
+    <!-- Tuition -->
+    <section id="tuition" class="py-16 bg-blue-50 scroll-mt-20">
+        <div class="container mx-auto px-4 grid lg:grid-cols-2 gap-12">
+            <div>
+                <h2 class="text-3xl font-bold mb-6">Стоимость обучения</h2>
+                <div class="space-y-4">
+                    {% for fee in tuition_fees %}
+                    <div class="bg-white p-5 rounded-xl shadow-sm flex justify-between items-center">
+                        <div>
+                            <div class="text-sm text-gray-500 font-semibold uppercase">{{ fee.level }}</div>
+                            <div class="text-gray-900 font-medium">{{ fee.study_format }}</div>
+                        </div>
+                        <div class="text-blue-900 font-bold text-xl">{{ fee.price }} ₸</div>
+                    </div>
+                    {% endfor %}
+                    <!-- Fallback if empty -->
+                    {% if not tuition_fees %}
+                    <div class="bg-white p-5 rounded-xl shadow-sm text-center text-gray-500">Информация о стоимости обновляется...</div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="bg-blue-900 text-white rounded-2xl p-8 lg:p-12 shadow-xl">
+                <h3 class="text-2xl font-bold mb-6">Гранты и льготы</h3>
+                <ul class="space-y-4 mb-8">
+                    {% for benefit in benefits %}
+                    <li class="flex items-start gap-3">
+                        <svg class="w-6 h-6 text-green-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        <span>{{ benefit.text }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+                <button onclick="openModal('consultationModal')" class="w-full bg-white text-blue-900 py-3 rounded-lg font-bold hover:bg-gray-100 transition">
+                    Рассчитать стоимость / Задать вопрос
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="py-16 bg-white scroll-mt-20" x-data="{ active: null }">
+        <div class="container mx-auto px-4 max-w-3xl">
+            <h2 class="text-3xl font-bold text-center mb-12">FAQ</h2>
+            <div class="space-y-4">
+                {% for faq in faqs %}
+                <div class="border border-gray-200 rounded-lg overflow-hidden">
+                    <button @click="active === {{ forloop.counter }} ? active = null : active = {{ forloop.counter }}" class="w-full px-6 py-4 text-left font-semibold flex justify-between items-center bg-gray-50 hover:bg-gray-100 transition">
+                        <span>{{ faq.question }}</span>
+                        <svg class="w-5 h-5 transition-transform" :class="{'rotate-180': active === {{ forloop.counter }}}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div x-show="active === {{ forloop.counter }}" x-collapse class="px-6 py-4 bg-white text-gray-600">
+                        {{ faq.answer }}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Contacts -->
+    <section id="contacts" class="py-16 bg-gray-900 text-white scroll-mt-20">
+        <div class="container mx-auto px-4 grid lg:grid-cols-2 gap-12">
+            <div>
+                <h2 class="text-3xl font-bold mb-8">Мы всегда на связи</h2>
+                <div class="space-y-6">
+                    <div>
+                        <div class="text-gray-400 text-sm mb-1">Call-центр</div>
+                        <a href="tel:{{ config.phone }}" class="text-2xl font-bold hover:text-blue-300 transition">{{ config.phone|default:"+7 (7xx) xxx-xx-xx" }}</a>
+                    </div>
+                    <div>
+                        <div class="text-gray-400 text-sm mb-1">Email</div>
+                        <a href="mailto:{{ config.email }}" class="text-xl hover:text-blue-300 transition">{{ config.email|default:"info@university.kz" }}</a>
+                    </div>
+                    <div>
+                        <div class="text-gray-400 text-sm mb-2">Адрес</div>
+                        <p class="text-lg">{{ config.address }}</p>
+                    </div>
+                    <div class="flex gap-4 pt-4">
+                        {% if config.whatsapp_link %}
+                        <a href="{{ config.whatsapp_link }}" target="_blank" class="bg-green-600 px-6 py-2 rounded-lg font-bold hover:bg-green-700 transition flex items-center gap-2">
+                             WhatsApp
+                        </a>
+                        {% endif %}
+                        {% if config.telegram_link %}
+                        <a href="{{ config.telegram_link }}" target="_blank" class="bg-blue-500 px-6 py-2 rounded-lg font-bold hover:bg-blue-600 transition flex items-center gap-2">
+                             Telegram
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="h-80 lg:h-auto bg-gray-800 rounded-xl overflow-hidden">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2551.488661647416!2d80.2520!3d50.4180!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNTDCsDI1JzA0LjgiTiA4MMKwMTUnMDcuMiJF!5e0!3m2!1sen!2skz!4v1614000000000!5m2!1sen!2skz" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 border-t border-gray-800 py-8 text-center text-gray-500 text-sm">
+        <div class="container mx-auto px-4">
+            <p>&copy; 2026 Shakarim University. Все права защищены.</p>
+        </div>
+    </footer>
+
+
+    <!-- Consultation Modal -->
+    <div id="consultationModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl w-full max-w-md p-6 relative">
+            <button onclick="closeModal('consultationModal')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            
+            <h3 class="text-2xl font-bold mb-2">Онлайн консультация</h3>
+            <p class="text-sm text-gray-500 mb-6">Оставьте свои данные и мы свяжемся с вами.</p>
+            
+            <form id="leadForm" onsubmit="submitForm(event)" class="space-y-4">
+                <input type="text" name="program" id="modalProgram" hidden>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">ФИО</label>
+                    <input type="text" name="name" required class="w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-blue-500 outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Телефон</label>
+                    <input type="tel" name="phone" required class="w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-blue-500 outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Уровень</label>
+                    <select name="level" class="w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-blue-500 outline-none">
+                        <option value="Bachelor">Бакалавриат</option>
+                        <option value="Master">Магистратура</option>
+                    </select>
+                </div>
+                <button type="submit" class="w-full bg-blue-800 text-white py-3 rounded-lg font-bold hover:bg-blue-900 transition">
+                    Отправить заявку
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- PDF Modal -->
+    <div id="pdfModal" class="fixed inset-0 bg-black bg-opacity-75 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl w-full max-w-4xl h-[80vh] flex flex-col relative">
+            <div class="flex justify-between items-center p-4 border-b">
+                <h3 class="font-bold text-lg">Буклет программы</h3>
+                <div class="flex gap-4">
+                    <a id="pdfDownloadLink" href="#" download class="text-blue-600 hover:underline">Скачать</a>
+                    <button onclick="closeModal('pdfModal')" class="text-gray-500 hover:text-gray-700">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                </div>
+            </div>
+
+            <div class="flex-1 bg-gray-100 p-1">
+                <iframe id="pdfViewer" src="" class="w-full h-full border-none"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openModal(id, programTitle = '') {
+            document.getElementById(id).classList.remove('hidden');
+            if (programTitle && document.getElementById('modalProgram')) {
+                document.getElementById('modalProgram').value = programTitle;
+            }
+        }
+        
+        function closeModal(id) {
+            document.getElementById(id).classList.add('hidden');
+        }
+
+        function openPdfModal(url) {
+            // Check for mobile
+            if (window.innerWidth < 768) {
+                window.open(url, '_blank');
+                return;
+            }
+            const modal = document.getElementById('pdfModal');
+            document.getElementById('pdfViewer').src = url;
+            document.getElementById('pdfDownloadLink').href = url;
+            modal.classList.remove('hidden');
+        }
+
+        async function submitForm(e) {
+            e.preventDefault();
+            const form = e.target;
+            const data = Object.fromEntries(new FormData(form).entries());
+            
+            try {
+                const response = await fetch('/api/lead/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: JSON.stringify(data)
+                });
+                const result = await response.json();
+                if (result.status === 'success') {
+                    alert(result.message);
+                    closeModal('consultationModal');
+                    form.reset();
+                } else {
+                    alert('Error: ' + result.message);
+                }
+            } catch (err) {
+                alert('Connection error');
+            }
+        }
+    </script>
+</body>
+</html>
