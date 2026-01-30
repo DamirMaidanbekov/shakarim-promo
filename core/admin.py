@@ -1,10 +1,13 @@
 from django.contrib import admin
-from modeltranslation.admin import TranslationAdmin
+from modeltranslation.admin import TranslationAdmin, TabbedTranslationAdmin
 from .models import Program, CalendarEvent, TuitionFee, GrantBenefit, FAQ, SiteConfig, Lead
 
 @admin.register(Program)
-class ProgramAdmin(TranslationAdmin):
-    list_display = ('title', 'level')
+class ProgramAdmin(TabbedTranslationAdmin):
+    list_display = ('title', 'level', 'code')
+    search_fields = ('title', 'code')
+    list_filter = ('level',)
+    # fieldsets = ...  Letting auto-discovery work to ensure fields are detected
 
 @admin.register(CalendarEvent)
 class CalendarEventAdmin(TranslationAdmin):

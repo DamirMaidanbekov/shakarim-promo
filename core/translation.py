@@ -3,7 +3,16 @@ from .models import Program, CalendarEvent, TuitionFee, GrantBenefit, FAQ, SiteC
 
 @register(Program)
 class ProgramTranslationOptions(TranslationOptions):
-    fields = ('title', 'description', 'tags', 'brochure')
+    fields = (
+        'title', 'description', 'tags', 'brochure',
+        'main_info', 'unt_subjects', 'usp', 'slogan',
+        'advantage_1', 'advantage_2', 'advantage_3',
+        'target_audience', 'career_track',
+        'profession_1', 'profession_2', 'profession_3', 'profession_4', 'profession_5',
+        'partners', 'salary_start', 'what_will_learn',
+        'hard_skills', 'soft_skills', 'interesting_subjects',
+        'social_proof', 'star_graduates', 'star_teachers'
+    )
 
 @register(CalendarEvent)
 class CalendarEventTranslationOptions(TranslationOptions):
