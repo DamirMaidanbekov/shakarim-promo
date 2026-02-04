@@ -1,0 +1,247 @@
+{% extends 'base_public.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block content %}
+<div class="min-h-screen pt-32 pb-16 bg-gradient-to-br from-slate-50 to-blue-50 dark:from-dark-950 dark:to-blue-900/10"
+     x-data="careerTest()">
+    
+    <div class="container mx-auto px-4">
+        
+        <!-- Header -->
+        <div class="max-w-3xl mx-auto text-center mb-12" x-show="step !== 'result'">
+            <h1 class="text-3xl md:text-5xl font-display font-bold text-slate-900 dark:text-white mb-4">
+                {% trans "Выбор будущей профессии" %}
+            </h1>
+            <p class="text-lg text-gray-600 dark:text-gray-300">
+                {% trans "Пройдите тест и узнайте, какие направления в Shakarim University подходят именно вам." %}
+            </p>
+        </div>
+
+        <!-- Quiz Container -->
+        <div class="max-w-4xl mx-auto bg-white dark:bg-dark-900 rounded-3xl shadow-xl border border-gray-100 dark:border-white/10 overflow-hidden relative min-h-[500px]">
+            
+            <!-- Progress Bar -->
+            <div class="absolute top-0 left-0 w-full h-2 bg-gray-100 dark:bg-white/5" x-show="step === 'quiz'">
+                <div class="h-full bg-blue-600 transition-all duration-300 ease-out"
+                     :style="`width: ${(currentQuestionIndex / totalQuestions) * 100}%`"></div>
+            </div>
+
+            <div class="p-6 md:p-12 relative z-10 h-full flex flex-col">
+                
+                <!-- Start Screen -->
+                <div x-show="step === 'start'" x-transition:enter="transition ease-out duration-300 transform" class="text-center my-auto">
+                    <div class="w-24 h-24 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mx-auto mb-8 border-4 border-white dark:border-dark-800 shadow-lg">
+                        <i class="fas fa-compass text-4xl text-blue-600 dark:text-blue-400"></i>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-400 mb-8 max-w-lg mx-auto">
+                        {% trans "Этот тест для выпускников 11 классов и колледжей. Он займет 5–7 минут и поможет определить подходящие ОП. Результат носит рекомендательный характер." %}
+                    </p>
+                    
+                    <button @click="startTest()"
+                            class="px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold shadow-lg shadow-blue-500/30 transition-all transform hover:-translate-y-1">
+                        {% trans "Начать тест" %}
+                    </button>
+                    <!-- Back to Home -->
+                    <div class="mt-6">
+                        <a href="{% url 'landing' %}" class="text-sm text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                            ← {% trans "Вернуться на главную" %}
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Questions Interface -->
+                <div x-show="step === 'quiz'" x-cloak class="flex flex-col h-full justify-center">
+                    <template x-for="(q, index) in questions" :key="q.id">
+                        <div x-show="currentQuestionIndex === index" 
+                             x-transition:enter="transition ease-out duration-300 transform opacity-0 translate-x-12"
+                             x-transition:enter-start="opacity-0 translate-x-12"
+                             x-transition:enter-end="opacity-100 translate-x-0"
+                             class="w-full max-w-3xl mx-auto">
+                            
+                            <div class="flex justify-between items-center mb-6">
+                                <span class="text-sm font-medium text-gray-500 dark:text-gray-400">
+                                    {% trans "Вопрос" %} <span x-text="index + 1"></span> / <span x-text="totalQuestions"></span>
+                                </span>
+                            </div>
+                            
+                            <h3 class="text-2xl md:text-3xl font-bold text-slate-800 dark:text-white mb-8" x-text="q.text"></h3>
+                            
+                            <div class="space-y-3">
+                                <template x-for="option in q.options" :key="option.id">
+                                    <button @click="answer(option)"
+                                            class="w-full p-4 md:p-5 rounded-xl border-2 border-gray-100 dark:border-white/5 hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 text-left transition-all group flex items-start">
+                                        <div class="flex-shrink-0 w-6 h-6 rounded-full border-2 border-gray-300 dark:border-gray-600 mr-4 group-hover:border-blue-500 flex items-center justify-center">
+                                            <div class="w-3 h-3 rounded-full bg-blue-500 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                                        </div>
+                                        <span class="text-lg text-slate-700 dark:text-slate-200" x-text="option.text"></span>
+                                    </button>
+                                </template>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+
+                <!-- Result Screen -->
+                <div x-show="step === 'result'" x-cloak class="text-center">
+                    <h2 class="text-3xl font-bold text-slate-800 dark:text-white mb-6">{% trans "Ваш результат" %}</h2>
+                    
+                    <!-- Main Recommendation -->
+                    <div class="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-2xl p-8 text-white shadow-xl mb-8 text-left relative overflow-hidden">
+                         <div class="relative z-10">
+                            <p class="text-blue-100 mb-2 font-medium">{% trans "Вам лучше всего подходят направления:" %}</p>
+                            <template x-for="res in topProfiles">
+                                <div class="mb-6 last:mb-0">
+                                    <h3 class="text-2xl md:text-3xl font-bold mb-2 flex items-center">
+                                        <span class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-sm mr-3 font-mono" x-text="res.code"></span>
+                                        <span x-text="res.title"></span>
+                                    </h3>
+                                    <p class="text-white/80 leading-relaxed" x-text="res.description"></p>
+                                </div>
+                            </template>
+                         </div>
+                         <!-- Decorative blobs -->
+                         <div class="absolute top-0 right-0 -mt-10 -mr-10 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
+                    </div>
+
+                    <!-- Recommended Programs -->
+                    <div x-show="recommendedPrograms.length > 0" class="mb-12">
+                        <h3 class="text-xl font-bold text-slate-800 dark:text-white mb-6 text-left">{% trans "Рекомендованные образовательные программы:" %}</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-left">
+                            <template x-for="prog in recommendedPrograms" :key="prog.id">
+                                <div class="p-5 rounded-xl bg-white dark:bg-white/5 border border-gray-100 dark:border-white/10 hover:shadow-md transition-shadow">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <span class="text-xs font-bold px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded" x-text="prog.code"></span>
+                                        <span class="w-6 h-6 rounded-full bg-gray-100 dark:bg-white/10 flex items-center justify-center text-xs text-gray-500 font-bold" x-text="prog.profile_code"></span>
+                                    </div>
+                                    <h4 class="font-bold text-slate-800 dark:text-white mb-1" x-text="prog.title"></h4>
+                                    <a :href="prog.url || '#'" class="text-sm text-blue-600 hover:underline mt-2 inline-block">{% trans "Подробнее" %} →</a>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                    
+                    <!-- CTA -->
+                    <div class="bg-gray-50 dark:bg-white/5 rounded-2xl p-8 border border-gray-100 dark:border-white/10">
+                        <h3 class="text-xl font-bold mb-4">{% trans "Хотите узнать больше?" %}</h3>
+                         <div class="flex flex-col md:flex-row justify-center gap-4">
+                            <a href="{% url 'landing' %}#programs" class="btn-primary">
+                                {% trans "Посмотреть все программы" %}
+                            </a>
+                            <button @click="resetTest()" class="px-6 py-3 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-white/10 transition">
+                                {% trans "Пройти заново" %}
+                            </button>
+                        </div>
+                        <p class="text-xs text-gray-400 mt-6">
+                            {% trans "Результаты теста носят рекомендательный характер и не заменяют профессиональную консультацию." %}
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function careerTest() {
+        return {
+            step: 'start',
+            currentQuestionIndex: 0,
+            scores: { 'A': 0, 'B': 0, 'C': 0, 'D': 0, 'E': 0, 'F': 0 },
+            
+            // Data injected from Django View
+            questions: {{ questions_json|safe }},
+            profilesInfo: {{ profiles_json|safe }}, 
+            programsInfo: {{ programs_json|safe }},
+            
+            get totalQuestions() {
+                return this.questions.length;
+            },
+
+            startTest() {
+                this.step = 'quiz';
+                this.currentQuestionIndex = 0;
+                this.resetScores();
+            },
+
+            answer(option) {
+                // Apply Weights
+                for (const [profileCode, weight] of Object.entries(option.weights)) {
+                    if (this.scores.hasOwnProperty(profileCode)) {
+                        this.scores[profileCode] += weight;
+                    }
+                }
+
+                if (this.currentQuestionIndex < this.totalQuestions - 1) {
+                    this.currentQuestionIndex++;
+                } else {
+                    this.calculateResults();
+                }
+            },
+
+            topProfiles: [],
+            recommendedPrograms: [],
+
+            calculateResults() {
+                // Sort scores descending
+                const sortedScores = Object.entries(this.scores)
+                    .sort(([, a], [, b]) => b - a);
+                
+                const first = sortedScores[0];
+                const second = sortedScores[1];
+                
+                let selectedCodes = [first[0]];
+                
+                // If the second score is non-zero, include it
+                if (second && second[1] > 0) {
+                    selectedCodes.push(second[0]);
+                }
+
+                // Prepare Display Data
+                this.topProfiles = selectedCodes.map(code => ({
+                    code: code,
+                    ...this.profilesInfo[code]
+                }));
+
+                // Prepare Programs
+                this.recommendedPrograms = [];
+                if (selectedCodes.length === 1) {
+                    const code1 = selectedCodes[0];
+                    const list1 = (this.programsInfo[code1] || []).slice(0, 6);
+                    this.recommendedPrograms = list1.map(p => ({...p, profile_code: code1}));
+                } else {
+                    const code1 = selectedCodes[0];
+                    const code2 = selectedCodes[1];
+                    const list1 = (this.programsInfo[code1] || []).slice(0, 4);
+                    const list2 = (this.programsInfo[code2] || []).slice(0, 2);
+                    
+                    this.recommendedPrograms = [
+                        ...list1.map(p => ({...p, profile_code: code1})),
+                        ...list2.map(p => ({...p, profile_code: code2}))
+                    ];
+                }
+
+                this.step = 'result';
+            },
+
+            resetScores() {
+                this.scores = { 'A': 0, 'B': 0, 'C': 0, 'D': 0, 'E': 0, 'F': 0 };
+            },
+            
+            resetTest() {
+                 this.step = 'start';
+                 this.resetScores();
+                 window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+    }
+</script>
+
+<style>
+    .btn-primary {
+        @apply px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-bold transition shadow-lg shadow-blue-500/30;
+    }
+</style>
+{% endblock %}

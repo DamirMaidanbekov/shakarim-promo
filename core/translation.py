@@ -1,5 +1,9 @@
 from modeltranslation.translator import register, TranslationOptions
-from .models import Program, CalendarEvent, TuitionFee, GrantBenefit, FAQ, SiteConfig
+from .models import Program, UNTSubjectComb, CareerProfile, CalendarEvent, TuitionFee, GrantBenefit, FAQ, SiteConfig
+
+@register(CareerProfile)
+class CareerProfileTranslationOptions(TranslationOptions):
+    fields = ('title', 'description')
 
 @register(Program)
 class ProgramTranslationOptions(TranslationOptions):

@@ -1,0 +1,67 @@
+{% extends 'applicants/base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Мои заявки" %}{% endblock %}
+
+{% block content %}
+<div class="flex h-screen overflow-hidden">
+    <!-- Sidebar -->
+    {% include 'applicants/partials/sidebar.html' %}
+
+    <main class="flex-1 overflow-y-auto custom-scrollbar p-6 relative z-0">
+        <div class="max-w-5xl mx-auto">
+            <div class="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4">
+                <h1 class="text-3xl font-bold font-display dark:text-white">{% trans "Мои заявки" %}</h1>
+                <a href="{% url 'applicants:application_create' %}" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-xl shadow-lg shadow-blue-500/30 transition-all flex items-center gap-2 group">
+                    <svg class="w-5 h-5 group-hover:rotate-90 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                    {% trans "Подать новую заявку" %}
+                </a>
+            </div>
+
+            <!-- Applications List -->
+            <div class="space-y-4">
+                {% for app in applications %}
+                <div class="glass-card rounded-2xl p-6 dark:bg-gray-800/40 hover:bg-white/70 dark:hover:bg-gray-800/60 transition-all">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <div>
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider
+                                    {% if app.status == 'APPROVED' %}bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400
+                                    {% elif app.status == 'REJECTED' %}bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400
+                                    {% else %}bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400{% endif %}">
+                                    {{ app.get_status_display }}
+                                </span>
+                                <span class="text-xs text-gray-500 font-mono">{{ app.created_at|date:"d.m.Y" }}</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">{{ app.program.title }}</h3>
+                            <div class="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
+                                <span>{% trans "Код:" %} <strong class="text-gray-700 dark:text-gray-300">{{ app.program.code }}</strong></span>
+                                <span>&bull;</span>
+                                <span>{% trans "Язык:" %} <strong class="text-gray-700 dark:text-gray-300">{{ app.get_study_language_display }}</strong></span>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center gap-3">
+                            <a href="{% url 'applicants:application_detail' app.id %}" class="px-5 py-2.5 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 border border-gray-200 dark:border-gray-600 rounded-xl text-sm font-medium transition-colors shadow-sm text-gray-700 dark:text-gray-200">
+                                {% trans "Подробнее" %}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="text-center py-16 glass-card rounded-2xl">
+                    <div class="w-20 h-20 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-10 h-10 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">{% trans "Заявок нет" %}</h3>
+                    <p class="text-gray-500 dark:text-gray-400 mb-6 max-w-sm mx-auto">{% trans "Вы еще не подали ни одной заявки на поступление. Выберите программу и начните обучение!" %}</p>
+                    <a href="{% url 'applicants:application_create' %}" class="inline-flex items-center gap-2 text-white bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-xl font-medium transition-colors shadow-lg shadow-blue-500/30">
+                        {% trans "Подать первую заявку" %} &rarr;
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </main>
+</div>
+{% endblock %}

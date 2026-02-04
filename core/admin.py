@@ -1,12 +1,21 @@
 from django.contrib import admin
 from modeltranslation.admin import TranslationAdmin, TabbedTranslationAdmin
-from .models import Program, CalendarEvent, TuitionFee, GrantBenefit, FAQ, SiteConfig, Lead
+from .models import Program, UNTSubjectComb, CareerProfile, CalendarEvent, TuitionFee, GrantBenefit, FAQ, SiteConfig, Lead
+
+@admin.register(CareerProfile)
+class CareerProfileAdmin(TabbedTranslationAdmin):
+    list_display = ('code', 'title')
+    search_fields = ('code', 'title')
+
+@admin.register(UNTSubjectComb)
+class UNTSubjectCombAdmin(admin.ModelAdmin):
+    list_display = ('title',)
 
 @admin.register(Program)
 class ProgramAdmin(TabbedTranslationAdmin):
-    list_display = ('title', 'level', 'code')
+    list_display = ('title', 'level', 'code', 'unt_combination', 'passing_score', 'career_profile')
     search_fields = ('title', 'code')
-    list_filter = ('level',)
+    list_filter = ('level', 'unt_combination', 'career_profile')
     # fieldsets = ...  Letting auto-discovery work to ensure fields are detected
 
 @admin.register(CalendarEvent)
@@ -19,6 +28,7 @@ class TuitionFeeAdmin(TranslationAdmin):
 
 @admin.register(GrantBenefit)
 class GrantBenefitAdmin(TranslationAdmin):
+    list_display = ('text', 'description')
     pass
 
 @admin.register(FAQ)

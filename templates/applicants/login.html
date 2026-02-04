@@ -1,0 +1,49 @@
+{% extends 'applicants/base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Вход в личный кабинет" %}{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center p-4">
+    <div class="max-w-md w-full bg-white dark:bg-gray-900 rounded-2xl shadow-xl overflow-hidden glass border border-gray-100 dark:border-gray-800">
+        <div class="p-8">
+            <div class="text-center mb-8">
+                <a href="/" class="inline-block w-12 h-12 bg-gradient-to-tr from-blue-500 to-purple-600 rounded-xl text-white font-bold text-2xl flex items-center justify-center mb-4 mx-auto shadow-lg">S</a>
+                <h2 class="text-2xl font-bold font-display mb-2">{% trans "С возвращением!" %}</h2>
+                <p class="text-gray-500 dark:text-gray-400 text-sm">{% trans "Войдите, чтобы управлять заявкой" %}</p>
+            </div>
+
+            <form method="post" class="space-y-6">
+                {% csrf_token %}
+                
+                {% if form.errors %}
+                <div class="bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 p-3 rounded-lg text-sm">
+                    <p>{% trans "Неверное имя пользователя или пароль." %}</p>
+                </div>
+                {% endif %}
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{% trans "Логин (ИИН)" %}</label>
+                    <input type="text" name="username" required
+                        class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 focus:ring-2 focus:ring-blue-500 outline-none transition-all">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{% trans "Пароль" %}</label>
+                    <input type="password" name="password" required
+                        class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 focus:ring-2 focus:ring-blue-500 outline-none transition-all">
+                </div>
+
+                <button type="submit" class="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors shadow-lg shadow-blue-500/30">
+                    {% trans "Войти" %}
+                </button>
+            </form>
+
+            <div class="mt-6 text-center text-sm text-gray-500 dark:text-gray-400">
+                {% trans "Нет аккаунта?" %} 
+                <a href="{% url 'applicants:register' %}" class="text-blue-600 hover:text-blue-500 font-medium">{% trans "Зарегистрироваться" %}</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,5 +1,27 @@
 from django.db import models
 
+class UNTSubjectComb(models.Model):
+    title = models.CharField(max_length=255, verbose_name="Предметы сдачи (напр. Математика - Физика)")
+
+    def __str__(self):
+        return self.title
+
+class CareerProfile(models.Model):
+    CODE_CHOICES = (
+        ('A', 'A - IT'),
+        ('B', 'B - STEM'),
+        ('C', 'C - Business'),
+        ('D', 'D - Pedagogy'),
+        ('E', 'E - Agro/Bio'),
+        ('F', 'F - Humanities'),
+    )
+    code = models.CharField(max_length=2, choices=CODE_CHOICES, unique=True)
+    title = models.CharField(max_length=255)
+    description = models.TextField(blank=True)
+
+    def __str__(self):
+        return f"{self.code} - {self.title}"
+
 class Program(models.Model):
     LEVEL_CHOICES = (
         ('BACHELOR', 'Bachelor'),
@@ -10,11 +32,16 @@ class Program(models.Model):
     level = models.CharField(max_length=20, choices=LEVEL_CHOICES, default='BACHELOR')
     tags = models.CharField(max_length=255, blank=True, help_text="e.g. 'UNT: Math+Physics'")
     brochure = models.FileField(upload_to='brochures/', blank=True, null=True)
+    
+    # Career Profile
+    career_profile = models.ForeignKey(CareerProfile, on_delete=models.SET_NULL, null=True, blank=True, related_name='programs', verbose_name="Профориентационный профиль")
 
     # Brochure Fields
     code = models.CharField(max_length=50, blank=True, verbose_name="Код ОП")
     main_info = models.TextField(blank=True, verbose_name="Негізгі ақпарат / Основная информация")
     unt_subjects = models.CharField(max_length=255, blank=True, verbose_name="ҰБТ бейіндік пәндері / Профильные предметы ЕНТ")
+    unt_combination = models.ForeignKey(UNTSubjectComb, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="Комбинация ЕНТ", related_name="programs")
+    passing_score = models.CharField(max_length=50, blank=True, verbose_name="Проходной балл")
     
     # Languages
     lang_kaz = models.BooleanField(default=False, verbose_name="Оқыту тілі: Қазақ")
@@ -78,7 +105,8 @@ class TuitionFee(models.Model):
         return f"{self.level} - {self.study_format}"
 
 class GrantBenefit(models.Model):
-    text = models.CharField(max_length=255)
+    text = models.CharField(max_length=255, verbose_name="Название")
+    description = models.TextField(blank=True, verbose_name="Описание")
 
     def __str__(self):
         return self.text

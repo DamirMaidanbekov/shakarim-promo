@@ -1,0 +1,67 @@
+{% extends 'applicants/base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Детали заявки" %}{% endblock %}
+
+{% block content %}
+<div class="flex h-screen overflow-hidden">
+    <!-- Sidebar -->
+    {% include 'applicants/partials/sidebar.html' %}
+
+    <main class="flex-1 overflow-y-auto custom-scrollbar p-6 relative z-0">
+        <div class="max-w-4xl mx-auto">
+            
+            <a href="{% url 'applicants:application_list' %}" class="inline-flex items-center gap-2 text-gray-500 hover:text-blue-600 mb-6 transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                {% trans "Назад к списку" %}
+            </a>
+
+            <div class="glass-card rounded-2xl p-8 dark:bg-gray-800/40 relative overflow-hidden">
+                <div class="flex justify-between items-start mb-6">
+                    <div>
+                        <span class="px-3 py-1 rounded-full text-sm font-bold uppercase tracking-wider
+                            {% if app.status == 'APPROVED' %}bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400
+                            {% elif app.status == 'REJECTED' %}bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400
+                            {% else %}bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400{% endif %}">
+                            {{ app.get_status_display }}
+                        </span>
+                        <h1 class="text-3xl font-bold font-display mt-4 dark:text-white">{{ app.program.title }}</h1>
+                        <p class="text-gray-500 text-lg">{{ app.program.code }}</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 border-t border-gray-100 dark:border-gray-700 pt-8">
+                    <div>
+                        <h3 class="font-bold text-gray-900 dark:text-white mb-4">{% trans "Информация о заявке" %}</h3>
+                        <dl class="space-y-4">
+                            <div>
+                                <dt class="text-sm text-gray-500">{% trans "Дата подачи" %}</dt>
+                                <dd class="font-medium dark:text-gray-300">{{ app.created_at|date:"d.m.Y H:i" }}</dd>
+                            </div>
+                            <div>
+                                <dt class="text-sm text-gray-500">{% trans "Язык обучения" %}</dt>
+                                <dd class="font-medium dark:text-gray-300">{{ app.get_study_language_display }}</dd>
+                            </div>
+                            <div>
+                                <dt class="text-sm text-gray-500">{% trans "Уровень" %}</dt>
+                                <dd class="font-medium dark:text-gray-300">{{ app.program.get_level_display }}</dd>
+                            </div>
+                        </dl>
+                    </div>
+                    
+                    <div>
+                        <h3 class="font-bold text-gray-900 dark:text-white mb-4">{% trans "Комментарий приемной комиссии" %}</h3>
+                        {% if app.manager_comment %}
+                        <div class="p-4 rounded-xl bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700">
+                            <p class="text-gray-700 dark:text-gray-300">{{ app.manager_comment }}</p>
+                        </div>
+                        {% else %}
+                        <p class="text-gray-400 italic">{% trans "Комментариев пока нет" %}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+{% endblock %}

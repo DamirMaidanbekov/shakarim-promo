@@ -1,0 +1,545 @@
+{% extends 'base_public.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block content %}
+    <!-- Hero Section -->
+    <header class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
+        <div class="container mx-auto px-4 relative z-10 grid lg:grid-cols-2 gap-12 items-center">
+            <div class="space-y-8 text-center lg:text-left gs-reveal">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border-blue-500/30 text-blue-600 dark:text-blue-300 text-xs font-bold tracking-wider uppercase animate-float">
+                    <span class="w-2 h-2 rounded-full bg-blue-500 dark:bg-blue-400 animate-pulse"></span>
+                    Приёмная кампания 2026
+                </div>
+                
+                <h1 class="text-5xl md:text-7xl lg:text-8xl font-display font-bold leading-[1.1] tracking-tight text-slate-900 dark:text-white">
+                    Будущее <br>
+                    <span class="transparent-text bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 dark:from-blue-400 dark:via-purple-400 dark:to-pink-400 text-glow">
+                        Начинается Здесь
+                    </span>
+                </h1>
+                
+                <p class="text-lg md:text-xl text-gray-600 dark:text-gray-400 max-w-xl mx-auto lg:mx-0 leading-relaxed">
+                    Shakarim University — это экосистема возможностей. Выбери профессию мечты, получи грант и стань лидером нового поколения.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                    <button onclick="openModal('consultationModal')" class="px-8 py-4 rounded-2xl bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold text-lg hover:scale-105 transition-transform shadow-xl shadow-blue-600/20 ring-1 ring-white/20">
+                        Индивидуальная консультация
+                    </button>
+                    
+                    <button x-data @click="$dispatch('open-career-test')" class="px-8 py-4 rounded-2xl glass hover:bg-black/5 dark:hover:bg-white/10 text-slate-900 dark:text-white font-bold text-lg hover:scale-105 transition-transform flex items-center justify-center gap-2 group">
+                        <span>Профориентация</span>
+                        <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                    </button>
+                </div>
+
+                <!-- Stats -->
+                <div class="grid grid-cols-3 gap-8 pt-8 border-t border-black/10 dark:border-white/10">
+                    <div>
+                        <div class="text-3xl font-display font-bold text-slate-900 dark:text-white">50+</div>
+                        <div class="text-sm text-gray-500">Программ обучения</div>
+                    </div>
+                    <div>
+                        <div class="text-3xl font-display font-bold text-slate-900 dark:text-white">90%</div>
+                        <div class="text-sm text-gray-500">Трудоустройство</div>
+                    </div>
+                    <div>
+                        <div class="text-3xl font-display font-bold text-slate-900 dark:text-white">TOP</div>
+                        <div class="text-sm text-gray-500">Региональный ВУЗ</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 3D Abstract Element Placeholder -->
+             <div class="hidden lg:flex flex-col items-center justify-center relative h-[700px] gs-reveal delay-200">
+                <div class="absolute inset-0 bg-gradient-to-tr from-blue-500/20 to-purple-500/20 rounded-full blur-[100px] animate-pulse-slow"></div>
+                
+                <div class="relative z-10 w-full flex flex-col items-center">
+                    <img src="https://i.ibb.co.com/2YpqF14g/jpg.jpg" 
+                        class="w-full max-w-[700px] rounded-3xl shadow-2xl rotate-[-2deg] border border-white/40 dark:border-white/10 hover:rotate-0 transition-transform duration-700 object-cover opacity-90 mb-16"
+                        data-tilt data-tilt-max="5" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.5"
+                        alt="Students">
+                    
+                    <button x-data @click="$dispatch('open-career-test')" class="relative z-30 group inline-flex items-center gap-3 px-8 py-4 bg-white dark:bg-dark-800 text-slate-900 dark:text-white rounded-2xl shadow-xl shadow-blue-900/10 hover:shadow-2xl hover:shadow-blue-600/20 transition-all hover:-translate-y-1 border border-black/5 dark:border-white/10 overflow-hidden text-left appearance-none cursor-pointer">
+                        <div class="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-purple-600/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        <span class="text-3xl">🎯</span>
+                        <div class="text-left">
+                            <div class="text-xs font-bold text-blue-600 dark:text-blue-400 uppercase tracking-widest mb-0.5">Пройти тест</div>
+                            <div class="text-lg font-bold font-display">Узнай свою профессию</div>
+                        </div>
+                        <svg class="w-5 h-5 ml-2 text-gray-400 group-hover:text-blue-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </button>
+                </div>
+                
+                <!-- Floating badges -->
+                <div class="absolute top-[15%] right-[5%] glass px-6 py-4 rounded-xl shadow-lg z-20 animate-float text-slate-900 dark:text-white" style="animation-delay: 1s;">
+                    <span class="text-2xl">🎓</span>
+                    <span class="font-bold ml-2">Гранты 2026</span>
+                </div>
+                <div class="absolute bottom-[25%] left-[5%] glass px-6 py-4 rounded-xl shadow-lg z-20 animate-float text-slate-900 dark:text-white" style="animation-delay: 2s;">
+                    <span class="text-2xl">🌍</span>
+                    <span class="font-bold ml-2">Международные связи</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Scroll indicator -->
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce opacity-50">
+            <span class="text-xs uppercase tracking-widest text-gray-500">Листай вниз</span>
+            <svg class="w-6 h-6 text-slate-900 dark:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+        </div>
+    </header>
+
+    <!-- Admission Steps (Timeline) -->
+    <section id="admission" class="py-32 relative">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl md:text-5xl font-bold text-center mb-20 text-slate-900 dark:text-white">
+                <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400">Путь абитуриента</span>
+            </h2>
+            
+            <div class="relative">
+                <!-- Line -->
+                <div class="hidden lg:block absolute top-1/2 left-0 w-full h-1 bg-gradient-to-r from-transparent via-blue-500/30 to-transparent -translate-y-1/2"></div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 relative z-10">
+                    <!-- Step 1 -->
+                    <div class="gs-step group">
+                        <div class="glass-card p-8 rounded-2xl relative h-full hover:-translate-y-2 transition-transform duration-300">
+                            <div class="w-12 h-12 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xl mb-6 shadow-lg shadow-blue-500/30 group-hover:scale-110 transition-transform">1</div>
+                            <h3 class="text-xl font-bold mb-3 text-slate-900 dark:text-white">Выбор Программы</h3>
+                            <p class="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">Определись со специальностью и профильными предметами. Это твой первый шаг.</p>
+                        </div>
+                    </div>
+                    <!-- Step 2 -->
+                    <div class="gs-step group" style="margin-top: 2rem;">
+                        <div class="glass-card p-8 rounded-2xl relative h-full hover:-translate-y-2 transition-transform duration-300">
+                            <div class="w-12 h-12 rounded-full bg-purple-600 text-white flex items-center justify-center font-bold text-xl mb-6 shadow-lg shadow-purple-500/30 group-hover:scale-110 transition-transform">2</div>
+                            <h3 class="text-xl font-bold mb-3 text-slate-900 dark:text-white">Регистрация</h3>
+                            <p class="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">Подай заявку на участие в ЕНТ через сайт НЦТ.</p>
+                        </div>
+                    </div>
+                    <!-- Step 3 -->
+                    <div class="gs-step group">
+                         <div class="glass-card p-8 rounded-2xl relative h-full hover:-translate-y-2 transition-transform duration-300">
+                            <div class="w-12 h-12 rounded-full bg-pink-600 text-white flex items-center justify-center font-bold text-xl mb-6 shadow-lg shadow-pink-500/30 group-hover:scale-110 transition-transform">3</div>
+                            <h3 class="text-xl font-bold mb-3 text-slate-900 dark:text-white">ЕНТ</h3>
+                            <p class="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">Сдай тестирование и набери проходной балл.</p>
+                        </div>
+                    </div>
+                    <!-- Step 4 -->
+                    <div class="gs-step group" style="margin-top: 2rem;">
+                         <div class="glass-card p-8 rounded-2xl relative h-full hover:-translate-y-2 transition-transform duration-300">
+                            <div class="w-12 h-12 rounded-full bg-orange-600 text-white flex items-center justify-center font-bold text-xl mb-6 shadow-lg shadow-orange-500/30 group-hover:scale-110 transition-transform">4</div>
+                            <h3 class="text-xl font-bold mb-3 text-slate-900 dark:text-white">Конкурс</h3>
+                            <p class="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">Участвуй в конкурсе грантов и выиграй бесплатное обучение.</p>
+                        </div>
+                    </div>
+                    <!-- Step 5 -->
+                    <div class="gs-step group">
+                         <div class="glass-card p-8 rounded-2xl relative h-full hover:-translate-y-2 transition-transform duration-300">
+                            <div class="w-12 h-12 rounded-full bg-green-600 text-white flex items-center justify-center font-bold text-xl mb-6 shadow-lg shadow-green-500/30 group-hover:scale-110 transition-transform">5</div>
+                            <h3 class="text-xl font-bold mb-3 text-slate-900 dark:text-white">Зачисление</h3>
+                            <p class="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">Поздравляем! Ты студент Shakarim University.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Programs Grid -->
+    <section id="programs" class="py-32 relative bg-white dark:bg-dark-900 transition-colors duration-300" x-data="{ search: '', shownCount: 6 }">
+        <div class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none mix-blend-overlay"></div>
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
+                <div>
+                    <h2 class="text-4xl font-bold mb-4 text-slate-900 dark:text-white">Направления подготовки</h2>
+                    <p class="text-gray-500 dark:text-gray-400">Выбери свою траекторию развития</p>
+                </div>
+                <div class="w-full md:w-1/3 relative">
+                    <input x-model="search" type="text" placeholder="Поиск специальности..." class="w-full bg-slate-100 dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-xl px-6 py-4 focus:outline-none focus:border-blue-500 focus:bg-white dark:focus:bg-white/10 transition-colors text-slate-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500">
+                    <svg class="w-5 h-5 absolute right-4 top-1/2 -translate-y-1/2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {% for program in programs %}
+                <div class="gs-card glass-card rounded-2xl p-1 overflow-hidden group"
+                     x-show="search !== '' ? '{{ program.title|escapejs }}'.toLowerCase().includes(search.toLowerCase()) : {{ forloop.counter0 }} < shownCount"
+                     data-tilt data-tilt-max="5" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.2">
+                    <div class="bg-white/50 dark:bg-dark-800/80 p-6 rounded-xl h-full flex flex-col relative overflow-hidden transition-colors">
+                        <!-- Decorative glow -->
+                        <div class="absolute -top-20 -right-20 w-40 h-40 bg-blue-500/10 dark:bg-blue-500/20 rounded-full blur-[50px] group-hover:bg-blue-500/20 dark:group-hover:bg-blue-500/40 transition-colors duration-500"></div>
+                        
+                        <div class="flex justify-between items-start mb-6 relative z-10">
+                            <span class="px-3 py-1 text-xs font-bold rounded-lg border border-black/5 dark:border-white/10 {% if program.level == 'BACHELOR' %}bg-blue-500/10 text-blue-600 dark:text-blue-400{% else %}bg-purple-500/10 text-purple-600 dark:text-purple-400{% endif %}">
+                                {{ program.get_level_display }}
+                            </span>
+                             <div class="text-xs text-gray-400 dark:text-gray-500 font-mono">{{ program.code }}</div>
+                        </div>
+
+                        <h3 class="text-xl font-bold mb-3 text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors cursor-pointer" @click="$dispatch('open-program-modal', programsData[{{ forloop.counter0 }}])">{{ program.title }}</h3>
+                        
+                        <div class="text-sm text-gray-500 dark:text-gray-400 mb-6 line-clamp-2 flex-grow">
+                            {{ program.description|default:"Описание программы готовится..." }}
+                        </div>
+
+                        {% if program.unt_combination %}
+                        <div class="mb-6 flex items-start gap-2">
+                             <div class="w-5 h-5 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center flex-shrink-0 mt-0.5 text-blue-600 dark:text-blue-400">
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                             </div>
+                             <div>
+                                <span class="text-[10px] font-bold uppercase tracking-wider text-gray-400 block mb-0.5">{% trans "Профильные предметы" %}</span>
+                                <div class="text-sm font-bold text-slate-700 dark:text-slate-300 leading-tight">
+                                    {{ program.unt_combination.title }}
+                                </div>
+                             </div>
+                        </div>
+                        {% endif %}
+
+                        {% if program.tags %}
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            {% for tag in program.tags.split %} 
+                            <span class="text-xs px-2 py-1 rounded bg-black/5 dark:bg-white/5 text-gray-500 dark:text-gray-400 border border-black/5 dark:border-white/5">{{ program.tags }}</span>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+
+                        <button @click="$dispatch('open-program-modal', programsData[{{ forloop.counter0 }}])" class="w-full py-3 rounded-lg bg-black/5 dark:bg-white/5 hover:bg-blue-600 dark:hover:bg-blue-600 hover:text-white border border-black/5 dark:border-white/10 hover:border-blue-500 transition-all font-medium flex items-center justify-center gap-2 group-hover:shadow-md dark:group-hover:shadow-[0_0_15px_rgba(37,99,235,0.5)] text-slate-700 dark:text-white">
+                            <span>Подробнее</span>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                        </button>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="mt-12 text-center" x-show="search === '' && shownCount < {{ programs|length }}">
+                <button @click="shownCount += 6" class="px-8 py-3 rounded-xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-slate-900 dark:text-white font-bold hover:bg-blue-50 dark:hover:bg-white/10 transition-all shadow-sm">
+                    {% trans "Показать еще" %}
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Calendar Info -->
+    <section id="calendar" class="py-32 relative overflow-hidden">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold mb-12 flex items-center gap-4 text-slate-900 dark:text-white">
+                <span class="w-12 h-1 bg-blue-500 rounded-full"></span>
+                Календарь событий
+            </h2>
+            
+            <div class="flex flex-nowrap overflow-x-auto pb-8 gap-6 snap-x">
+                {% for event in calendar_events %}
+                <div class="flex-none w-80 snap-center">
+                    <div class="glass-card p-8 rounded-2xl h-full hover:border-blue-500/50 transition-colors relative group overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-br from-blue-600/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        
+                        <div class="text-4xl font-display font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 mb-2">{{ event.date_display }}</div>
+                        <div class="text-sm font-bold tracking-widest uppercase text-gray-500 mb-4">{{ event.event_type }}</div>
+                        
+                        <h3 class="text-xl font-bold mb-2 text-slate-900 dark:text-white">{{ event.title }}</h3>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">{{ event.description }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Tuition & Benefits -->
+    <section id="tuition" class="py-32 bg-slate-100 dark:bg-dark-900 transition-colors duration-300 relative">
+        <div class="container mx-auto px-4 grid lg:grid-cols-2 gap-16 items-start">
+            <div class="space-y-8">
+                <h2 class="text-4xl font-bold text-slate-900 dark:text-white">Инвестиция в будущее</h2>
+                <div class="space-y-4">
+                    {% for fee in tuition_fees %}
+                    <div class="glass p-6 rounded-xl flex justify-between items-center hover:bg-white dark:hover:bg-white/5 transition-colors cursor-default">
+                        <div>
+                            <div class="text-xs text-blue-600 dark:text-blue-400 font-bold uppercase tracking-wider mb-1">{{ fee.level }}</div>
+                            <div class="font-medium text-lg text-slate-800 dark:text-white">{{ fee.study_format }}</div>
+                        </div>
+                        <div class="text-2xl font-bold font-display text-slate-900 dark:text-white">{{ fee.price }} ₸</div>
+                    </div>
+                    {% endfor %}
+                    
+                    {% if not tuition_fees %}
+                     <div class="p-6 rounded-xl border border-dashed border-gray-300 dark:border-gray-700 text-center text-gray-500">Стоимость обновляется...</div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="relative">
+                <div class="absolute -inset-4 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl blur-lg opacity-20 dark:opacity-30"></div>
+                <div class="bg-white dark:bg-dark-800 border border-black/5 dark:border-white/10 rounded-2xl p-10 relative z-10 transition-colors">
+                    <h3 class="text-2xl font-bold mb-8 text-slate-900 dark:text-white">Гранты и Скидки</h3>
+                    <ul class="space-y-6">
+                        {% for benefit in benefits %}
+                        <li class="flex items-start gap-4">
+                            <div class="w-6 h-6 rounded-full bg-green-500/10 dark:bg-green-500/20 flex items-center justify-center flex-shrink-0 text-green-600 dark:text-green-400 mt-0.5">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            </div>
+                            <div>
+                                <span class="block text-gray-800 dark:text-gray-200 font-bold leading-relaxed">{{ benefit.text }}</span>
+                                {% if benefit.description %}
+                                <span class="block text-sm text-gray-500 dark:text-gray-400 mt-1">{{ benefit.description }}</span>
+                                {% endif %}
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    <button onclick="openModal('consultationModal')" class="w-full mt-10 py-4 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-dark-950 font-bold text-lg hover:bg-slate-800 dark:hover:bg-gray-100 transition-colors shadow-lg">
+                        Узнать подробнее
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="py-32 relative">
+        <div class="container mx-auto px-4 max-w-4xl">
+            <h2 class="text-4xl font-bold text-center mb-16 text-slate-900 dark:text-white">
+                <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400">Часто задаваемые вопросы</span>
+            </h2>
+            
+            <div class="space-y-4">
+                {% for faq in faqs %}
+                <div class="glass p-6 rounded-2xl hover:bg-white dark:hover:bg-white/5 transition-all cursor-pointer group border border-transparent hover:border-blue-500/30" x-data="{ open: false }" @click="open = !open">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-lg font-bold text-slate-900 dark:text-white pr-8">{{ faq.question }}</h3>
+                        <div class="w-8 h-8 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-600 dark:text-blue-400 transition-transform duration-300" :class="{'rotate-45': open}">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                        </div>
+                    </div>
+                    <div x-show="open" x-collapse style="display: none;">
+                        <div class="pt-4 text-gray-600 dark:text-gray-300 leading-relaxed border-t border-gray-200 dark:border-white/10 mt-4">
+                            {{ faq.answer|linebreaks }}
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="text-center p-8 glass rounded-2xl">
+                    <p class="text-gray-500 dark:text-gray-400">На данный момент вопросов нет.</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Career Test Modal -->
+    <div x-data="careerTest()"
+         x-show="isOpen"
+         @open-career-test.window="openModal()"
+         class="fixed inset-0 z-50 flex items-center justify-center px-4"
+         x-cloak style="display: none;">
+        
+        <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-sm" @click="closeModal()"></div>
+        
+        <div class="relative w-full max-w-4xl bg-white dark:bg-dark-900 rounded-3xl shadow-2xl border border-white/10 overflow-hidden flex flex-col max-h-[90vh]">
+             <!-- Close Button -->
+             <button @click="closeModal()" class="absolute top-4 right-4 z-20 w-10 h-10 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center text-white transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+             </button>
+
+             <div class="overflow-y-auto flex-1 p-6 md:p-12 custom-scrollbar">
+                 <!-- Header -->
+                <div class="text-center mb-8" x-show="step !== 'result'">
+                    <h2 class="text-3xl font-display font-bold mb-2 text-slate-900 dark:text-white">{% trans "Профориентационный тест" %}</h2>
+                    <p class="text-gray-500">{% trans "Ответьте на 18 вопросов" %}</p>
+                </div>
+
+                <!-- Start -->
+                <div x-show="step === 'start'" class="flex flex-col items-center justify-center h-full py-10">
+                     <div class="w-24 h-24 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mb-6 animate-pulse-slow">
+                        <i class="fas fa-compass text-4xl text-blue-600 dark:text-blue-400"></i>
+                     </div>
+                     <p class="text-center max-w-lg text-gray-600 dark:text-gray-300 mb-8">
+                        {% trans "Этот тест поможет вам определиться с выбором профессии. Результат носит рекомендательный характер." %}
+                     </p>
+                     <button @click="startTest()" class="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold shadow-lg shadow-blue-500/30 transition-all hover:scale-105">
+                        {% trans "Начать тест" %}
+                     </button>
+                </div>
+
+                <!-- Quiz -->
+                <div x-show="step === 'quiz'" class="max-w-2xl mx-auto w-full">
+                     <!-- Progress -->
+                     <div class="w-full bg-gray-100 dark:bg-white/5 h-2 rounded-full mb-8 overflow-hidden">
+                        <div class="h-full bg-blue-500 transition-all duration-300" :style="`width: ${(currentQuestionIndex / totalQuestions) * 100}%`"></div>
+                     </div>
+                     
+                     <template x-for="(q, index) in questions" :key="q.id">
+                        <div x-show="currentQuestionIndex === index" x-transition.opacity.duration.300ms>
+                            <div class="text-center mb-8">
+                                <span class="text-xs uppercase tracking-widest text-blue-500 font-bold mb-2 block">{% trans "Вопрос" %} <span x-text="index + 1"></span> / <span x-text="totalQuestions"></span></span>
+                                <h3 class="text-2xl font-bold text-slate-800 dark:text-white" x-text="q.text"></h3>
+                            </div>
+                            <div class="space-y-3">
+                                <template x-for="option in q.options" :key="option.id">
+                                    <button @click="answer(option)" class="w-full p-4 text-left border-2 border-transparent hover:border-blue-500 bg-gray-50 dark:bg-white/5 rounded-xl transition-all hover:bg-blue-50 dark:hover:bg-blue-900/20 group">
+                                        <div class="flex items-center">
+                                            <div class="w-6 h-6 rounded-full border-2 border-gray-300 group-hover:border-blue-500 mr-4 flex items-center justify-center">
+                                                <div class="w-3 h-3 rounded-full bg-blue-500 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                                            </div>
+                                            <span class="text-lg text-gray-700 dark:text-gray-200" x-text="option.text"></span>
+                                        </div>
+                                    </button>
+                                </template>
+                            </div>
+                        </div>
+                     </template>
+                </div>
+
+                <!-- Result -->
+                <div x-show="step === 'result'" class="text-center">
+                    <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-6">{% trans "Ваш результат" %}</h2>
+                    
+                    <div class="text-left bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl p-8 text-white shadow-xl mb-8">
+                        <template x-for="res in topProfiles">
+                            <div class="mb-6 last:mb-0">
+                                <div class="flex items-center gap-3 mb-2">
+                                    <span class="px-3 py-1 bg-white/20 rounded-lg text-sm font-mono" x-text="res.code"></span>
+                                    <h3 class="text-2xl font-bold" x-text="res.title"></h3>
+                                </div>
+                                <p class="text-blue-100 leading-relaxed" x-text="res.description"></p>
+                            </div>
+                        </template>
+                    </div>
+
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6 text-left">{% trans "Рекомендованные программы" %}</h3>
+                    <div class="grid md:grid-cols-2 gap-4 text-left mb-8">
+                         <template x-for="prog in recommendedPrograms" :key="prog.id">
+                            <div class="bg-gray-50 dark:bg-white/5 p-4 rounded-xl border border-gray-100 dark:border-white/10 hover:border-blue-500 transition-colors cursor-pointer group"
+                                 @click="$dispatch('open-program-modal', prog)">
+                                <div class="flex justify-between items-start">
+                                    <span class="text-xs font-bold text-blue-600 dark:text-blue-400 mb-1 block" x-text="prog.code"></span>
+                                    <span class="text-xs text-gray-400 group-hover:text-blue-500">{% trans "Подробнее" %} &rarr;</span>
+                                </div>
+                                <h4 class="font-bold text-slate-800 dark:text-white leading-tight" x-text="prog.title"></h4>
+                            </div>
+                         </template>
+                    </div>
+                    
+                    <button @click="resetTest()" class="text-gray-500 hover:text-blue-500 text-sm">{% trans "Пройти заново" %}</button>
+                </div>
+             </div>
+        </div>
+    </div>
+
+<script>
+    function careerTest() {
+        return {
+            isOpen: false,
+            step: 'start',
+            currentQuestionIndex: 0,
+            scores: { 'A': 0, 'B': 0, 'C': 0, 'D': 0, 'E': 0, 'F': 0 },
+            
+            questions: {{ questions_json|safe }},
+            profilesInfo: {{ profiles_json|safe }}, 
+            programsInfo: {{ programs_json|safe }},
+            serverResult: {{ user_test_result|default:"null"|safe }},
+
+            init() {
+                if (this.serverResult && Object.keys(this.serverResult).length > 0) {
+                    this.scores = this.serverResult;
+                    this.calculateResults(false);
+                } else {
+                    const saved = localStorage.getItem('careerTestResult');
+                    if (saved) {
+                        try {
+                            const parsed = JSON.parse(saved);
+                            if (parsed && Object.keys(parsed).length > 0) {
+                                this.scores = parsed;
+                                this.calculateResults(false);
+                            }
+                        } catch(e) {}
+                    }
+                }
+            },
+            
+            get totalQuestions() { return this.questions.length; },
+            
+            openModal() {
+                 this.isOpen = true;
+                 document.body.classList.add('overflow-hidden');
+            },
+            closeModal() {
+                this.isOpen = false;
+                document.body.classList.remove('overflow-hidden');
+            },
+
+            startTest() {
+                this.step = 'quiz';
+                this.currentQuestionIndex = 0;
+                this.scores = { 'A': 0, 'B': 0, 'C': 0, 'D': 0, 'E': 0, 'F': 0 };
+            },
+
+            answer(option) {
+                for (const [code, weight] of Object.entries(option.weights)) {
+                    if (this.scores[code] !== undefined) this.scores[code] += weight;
+                }
+                if (this.currentQuestionIndex < this.totalQuestions - 1) {
+                    this.currentQuestionIndex++;
+                } else {
+                    this.calculateResults(true);
+                }
+            },
+            
+            topProfiles: [],
+            recommendedPrograms: [],
+
+            calculateResults(shouldSave = true) {
+                const sorted = Object.entries(this.scores).sort(([, a], [, b]) => b - a);
+                const first = sorted[0];
+                const second = sorted[1];
+                let selectedCodes = [first[0]];
+                if (second && second[1] > 0) selectedCodes.push(second[0]);
+
+                this.topProfiles = selectedCodes.map(c => ({ code: c, ...this.profilesInfo[c] }));
+                
+                this.recommendedPrograms = [];
+                if (selectedCodes.length === 1) {
+                    const c1 = selectedCodes[0];
+                    this.recommendedPrograms = (this.programsInfo[c1] || []).slice(0, 6);
+                } else {
+                    const c1 = selectedCodes[0];
+                    const c2 = selectedCodes[1];
+                    this.recommendedPrograms = [
+                        ...(this.programsInfo[c1] || []).slice(0, 4),
+                        ...(this.programsInfo[c2] || []).slice(0, 2)
+                    ];
+                }
+                this.step = 'result';
+
+                if (shouldSave) {
+                    localStorage.setItem('careerTestResult', JSON.stringify(this.scores));
+                    
+                    const isAuthenticated = "{{ request.user.is_authenticated|yesno:'true,false' }}" === "true";
+                    if (isAuthenticated) {
+                        fetch('/api/save-test-result/', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRFToken': '{{ csrf_token }}'
+                            },
+                            body: JSON.stringify({ scores: this.scores })
+                        }).catch(console.error);
+                    }
+                }
+            },
+
+            resetTest() {
+                this.step = 'start';
+                this.currentQuestionIndex = 0;
+                this.scores = { 'A': 0, 'B': 0, 'C': 0, 'D': 0, 'E': 0, 'F': 0 };
+                localStorage.removeItem('careerTestResult');
+                this.serverResult = null;
+            }
+        }
+    }
+</script>
+{% endblock %}

@@ -25,9 +25,13 @@ urlpatterns = [
 ]
 
 urlpatterns += i18n_patterns(
+    path('applicants/', include('applicants.urls')),
     path('', include('core.urls')),
     prefix_default_language=True # Ensures / redirects to /ru/
 )
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

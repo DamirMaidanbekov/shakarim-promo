@@ -1,0 +1,51 @@
+{% extends 'applicants/base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Заявка на общежитие" %}{% endblock %}
+
+{% block content %}
+<div class="flex h-screen overflow-hidden">
+    <!-- Sidebar -->
+    {% include 'applicants/partials/sidebar.html' %}
+
+    <main class="flex-1 overflow-y-auto custom-scrollbar p-6 relative z-0">
+        <div class="max-w-3xl mx-auto">
+            <h1 class="text-3xl font-bold font-display mb-8 dark:text-white">{% trans "Заявка на общежитие" %}</h1>
+            
+            <div class="glass-card rounded-2xl p-8 dark:bg-gray-800/40 relative overflow-hidden">
+                <!-- Gradients -->
+                <div class="absolute top-0 right-0 -mr-20 -mt-20 w-48 h-48 bg-purple-500/10 rounded-full blur-3xl"></div>
+                <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-48 h-48 bg-blue-500/10 rounded-full blur-3xl"></div>
+
+                <form method="post" class="space-y-8 relative z-10">
+                    {% csrf_token %}
+                    
+                    <div class="flex items-start gap-4 p-4 rounded-xl bg-blue-50/50 dark:bg-blue-900/10 border border-blue-100 dark:border-blue-900/30">
+                        <div class="mt-1">
+                            <input type="checkbox" name="needs_dorm" id="needs_dorm" class="w-5 h-5 text-blue-600 rounded focus:ring-blue-500" {% if request_obj.needs_dorm or not request_obj %}checked{% endif %}>
+                        </div>
+                        <label for="needs_dorm" class="text-sm font-medium text-gray-700 dark:text-gray-300">
+                            {% trans "Мне требуется место в общежитии" %}
+                            <p class="text-xs text-gray-500 mt-1 font-normal">{% trans "Отметьте, если вы нуждаетесь в предоставлении жилья на период обучения." %}</p>
+                        </label>
+                    </div>
+
+                    <div class="group">
+                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2 ml-1">{% trans "Комментарий / Дополнительная информация" %}</label>
+                        <textarea name="comment" rows="4" class="w-full px-5 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm focus:ring-4 focus:ring-blue-100 dark:focus:ring-blue-900/30 focus:border-blue-500 outline-none transition-all resize-none" placeholder="{% trans "Например: льготная категория (сирота, инвалидность и т.д.)" %}">{{ request_obj.comment }}</textarea>
+                    </div>
+
+                    <div class="flex justify-end gap-3 pt-6 border-t border-gray-100 dark:border-gray-700">
+                        <a href="{% url 'applicants:dashboard' %}" class="px-6 py-3 rounded-xl text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 font-medium transition-colors">
+                            {% trans "Отмена" %}
+                        </a>
+                        <button type="submit" class="px-8 py-3 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold rounded-xl shadow-lg shadow-blue-500/30 hover:shadow-blue-600/40 transform hover:-translate-y-0.5 transition-all">
+                            {% trans "Сохранить заявку" %}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+</div>
+{% endblock %}

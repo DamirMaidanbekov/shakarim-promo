@@ -1,0 +1,180 @@
+{% extends 'applicants/base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Личный кабинет" %}{% endblock %}
+
+{% block content %}
+<div class="flex h-screen overflow-hidden">
+    
+    <!-- Sidebar -->
+    {% include 'applicants/partials/sidebar.html' %}
+
+    <!-- Main Content -->
+    <main class="flex-1 overflow-y-auto relative z-0 custom-scrollbar p-6">
+        <!-- Header Mobile -->
+        <header class="md:hidden flex items-center justify-between p-4 glass-card rounded-xl mb-6">
+            <div class="font-bold text-lg dark:text-white">Cabinet</div>
+            <button class="text-gray-600 dark:text-gray-300">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </header>
+
+        <div class="max-w-7xl mx-auto space-y-6">
+            
+            <!-- Welcome -->
+            <div class="glass-card rounded-2xl p-8 dark:bg-gray-800/40 relative overflow-hidden group">
+                <div class="relative z-10">
+                    <h1 class="text-3xl font-bold font-display mb-2 text-slate-900 dark:text-white">
+                        {% trans "Привет," %} <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">{% if user.first_name %}{{ user.first_name }}{% else %}{% trans "Абитуриент" %}{% endif %}</span>! 👋
+                    </h1>
+                    <p class="text-gray-600 dark:text-gray-400 max-w-2xl">
+                        {% trans "Добро пожаловать в личный кабинет абитуриента Shakarim University. Здесь вы можете управлять своей заявкой, загружать документы и отслеживать статус." %}
+                    </p>
+                </div>
+                <!-- Decor -->
+                <div class="absolute right-0 top-0 h-full w-1/3 bg-gradient-to-l from-blue-500/10 to-transparent mix-blend-multiply dark:mix-blend-overlay"></div>
+            </div>
+
+            <!-- Stats / Actions -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+                <!-- Test Result Card -->
+                <div class="glass-card rounded-2xl p-6 relative overflow-hidden group hover:scale-[1.02] transition-transform border-l-4 border-l-pink-500">
+                    <div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                        <svg class="w-24 h-24" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg> 
+                    </div>
+                    {% if test_result and test_result.top_profile %}
+                        <h3 class="text-lg font-semibold mb-1 dark:text-gray-200">{% trans "Тест профориентации" %}</h3>
+                        <p class="text-xs text-gray-500 mb-1">{% trans "Ваш результат" %}</p>
+                        <p class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-600 to-purple-600 mb-2">
+                           {{ test_result.top_profile.code }} - {{ test_result.top_profile.title|truncatechars:18 }}
+                        </p>
+                         <p class="text-xs text-gray-400 mb-3 block">
+                             {{ test_result.top_profile.description|truncatechars:60 }}
+                        </p>
+                        <a href="/" class="inline-flex items-center gap-2 text-sm text-pink-600 font-bold hover:text-pink-500 transition-colors">
+                            {% trans "Смотреть программы" %} &rarr;
+                        </a>
+                    {% else %}
+                        <h3 class="text-lg font-semibold mb-1 dark:text-gray-200">{% trans "Тест профориентации" %}</h3>
+                        <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">{% trans "Пройдите тест, чтобы определить свою будущую профессию." %}</p>
+                         <a href="/#careerTest" class="inline-flex items-center gap-2 text-sm text-white bg-pink-600 hover:bg-pink-700 px-4 py-2 rounded-lg transition-colors shadow-lg shadow-pink-500/30">
+                            {% trans "Пройти тест" %} &rarr;
+                        </a>
+                    {% endif %}
+                </div>
+
+                <!-- Status Card -->
+                <div class="glass-card rounded-2xl p-6 relative overflow-hidden group hover:scale-[1.02] transition-transform border-l-4 border-l-blue-500">
+                    <div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                        <svg class="w-24 h-24" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L1 21h22L12 2zm0 3.516L20.297 19H3.703L12 5.516zM11 10h2v4h-2zm0 6h2v2h-2z"/></svg> 
+                    </div>
+                    {% if latest_draft %}
+                        <h3 class="text-lg font-semibold mb-1 dark:text-gray-200">{% trans "Ваша заявка" %}</h3>
+                        <p class="text-2xl font-bold text-yellow-500 mb-2">{% trans "Черновик" %}</p>
+                        <p class="text-xs text-gray-500 mb-3 line-clamp-1">{{ latest_draft.program.title }}</p>
+                        <a href="{% url 'applicants:application_list' %}" class="inline-flex items-center gap-2 text-sm text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg transition-colors shadow-lg shadow-blue-500/30">
+                            {% trans "Продолжить" %} &rarr;
+                        </a>
+                    {% else %}
+                         <h3 class="text-lg font-semibold mb-1 dark:text-gray-200">{% trans "Статус заявки" %}</h3>
+                         <p class="text-xl font-bold text-gray-400 mb-2">{% trans "Нет активных" %}</p>
+                         <a href="{% url 'applicants:application_create' %}" class="inline-flex items-center gap-2 text-sm text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg transition-colors shadow-lg shadow-blue-500/30">
+                            {% trans "Создать заявку" %} &rarr;
+                        </a>
+                    {% endif %}
+                </div>
+
+                <!-- Missing Docs Card -->
+                <div class="glass-card rounded-2xl p-6 relative overflow-hidden group hover:scale-[1.02] transition-transform border-l-4 border-l-purple-500">
+                    <div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                         <svg class="w-24 h-24" fill="currentColor" viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-1 dark:text-gray-200">{% trans "Документы" %}</h3>
+                    <div class="flex items-end gap-2 mb-2">
+                        <p class="text-3xl font-bold {% if docs_missing > 0 %}text-purple-500{% else %}text-green-500{% endif %}">
+                            {{ docs_uploaded }} <span class="text-lg text-gray-400 font-normal">/ {{ docs_required }}</span>
+                        </p>
+                    </div>
+                    {% if docs_missing > 0 %}
+                    <p class="text-sm text-gray-500 mb-3">{% trans "Необходимо загрузить еще" %} {{ docs_missing }}</p>
+                    <a href="{% url 'applicants:document_upload' %}" class="text-sm text-purple-600 hover:text-purple-500 font-medium underline">{% trans "Загрузить сейчас" %} &rarr;</a>
+                    {% else %}
+                    <p class="text-sm text-green-500 font-medium">{% trans "Все документы загружены!" %}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Dormitory Card -->
+                <div class="glass-card rounded-2xl p-6 relative overflow-hidden group hover:scale-[1.02] transition-transform border-l-4 border-l-purple-500">
+                    <div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                        <svg class="w-24 h-24" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 12h3v8h6v-6h2v6h6v-8h3L12 2z"/></svg> 
+                    </div>
+                    <h3 class="text-lg font-semibold mb-1 dark:text-gray-200">{% trans "Общежитие" %}</h3>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">{% trans "Подача заявки на место в общежитии" %}</p>
+                    <a href="{% url 'applicants:dormitory_request' %}" class="inline-flex items-center gap-2 text-sm text-purple-600 bg-purple-50 dark:bg-purple-900/20 hover:bg-purple-100 dark:hover:bg-purple-900/30 px-4 py-2 rounded-lg transition-colors font-medium">
+                        {% trans "Подать заявку" %} &rarr;
+                    </a>
+                </div>
+            </div>
+
+             <!-- Recent Notifications -->
+             <div class="glass-card rounded-2xl p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-lg font-bold dark:text-white">{% trans "Последние обновления" %}</h3>
+                    <button class="text-sm text-blue-600 hover:text-blue-500">{% trans "Все уведомления" %}</button>
+                </div>
+                
+                <div class="space-y-4">
+                    <div class="flex gap-4 items-start p-4 rounded-xl bg-white/40 dark:bg-gray-800/40 border border-white/50 dark:border-gray-700 transition-colors hover:bg-white/60 dark:hover:bg-gray-800/60">
+                        <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center flex-shrink-0">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        </div>
+                        <div>
+                            <h4 class="font-medium dark:text-gray-200">{% trans "Регистрация успешна" %}</h4>
+                            <p class="text-sm text-gray-500">{% trans "Добро пожаловать в систему! Заполните профиль для подачи заявки." %}</p>
+                            <span class="text-xs text-gray-400 mt-2 block">{% trans "Только что" %}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+</div>
+{% endblock %}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const hasServerResult = "{{ test_result|yesno:'true,false' }}" === "true";
+        const localResult = localStorage.getItem('careerTestResult');
+        
+        if (!hasServerResult && localResult) {
+            try {
+                const scores = JSON.parse(localResult);
+                if (scores && Object.keys(scores).length > 0) {
+                    console.log('Syncing career test result from localStorage...');
+                    
+                     fetch('/api/save-test-result/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        },
+                        body: JSON.stringify({ scores: scores })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                            console.log('Sync success! Reloading...');
+                            localStorage.removeItem('careerTestResult'); // Optional: clear after sync
+                            window.location.reload();
+                        }
+                    })
+                    .catch(console.error);
+                }
+            } catch (e) {
+                console.error('Error parsing local result', e);
+            }
+        }
+    });
+</script>
